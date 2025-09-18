@@ -1,12 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../App';
-import { act } from 'react'; // Use React.act instead of ReactDOMTestUtils.act
-
-// Sample products for testing (fixing the undefined 'sampleProducts' error)
-const sampleProducts = [
-  { id: 1, name: 'Apple', category: 'Fruits' },
-  { id: 2, name: 'Milk', category: 'Dairy' },
-];
+import { act } from 'react'; // Use React.act
 
 test('toggles dark mode on button click', () => {
   render(<App />);
@@ -35,9 +29,9 @@ test('displays message when no products match filter', () => {
 
 test('adds items to cart', () => {
   render(<App />);
-  const appleBtn = screen.getByTestId('product-1'); // Use the correct id from sampleProducts
+  const appleBtn = screen.getByTestId('product-3'); // Matches Apples' id
   act(() => {
     fireEvent.click(appleBtn);
   });
-  expect(screen.getByText('1 Apple')).toBeInTheDocument(); // Match the quantity display
+  expect(screen.getByText('1 Apples')).toBeInTheDocument();
 });
