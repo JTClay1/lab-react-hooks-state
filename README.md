@@ -105,3 +105,106 @@ Your task is to implement these features using **React Hooks (`useState`)** whil
 - [CSS Modules Documentation](https://github.com/css-modules/css-modules)
 - [Jest Testing Framework](https://jestjs.io/)
 - [React Testing Library](https://testing-library.com)
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Shopping App
+
+A simple React shopping application built as part of a lab assignment. This project demonstrates component composition, state management, controlled inputs, and basic test-driven development using Jest and React Testing Library.
+
+Features
+
+Dark Mode Toggle
+
+
+
+
+
+Button: Labeled "Toggle Dark Mode" by default.
+
+
+
+Functionality: Clicking the button switches the label to "Toggle Light Mode" and updates the data-theme attribute on the element to toggle between light and dark themes.
+
+Category Filter
+
+
+
+
+
+Dropdown: Includes options for "All", "Fruits", and "Dairy".
+
+
+
+Functionality: Selecting a category filters the products displayed in the product list.
+
+
+
+Empty State: Displays "No products available" if no products match the selected category.
+
+Product List
+
+
+
+
+
+Data Source: Backed by a named export sampleProducts (used in tests).
+
+
+
+Rendering: Renders individual ProductItem components, each with a data-testid="product-" attribute for testing.
+
+Shopping Cart
+
+
+
+
+
+Display: Shows items added to the cart with their counts in the format: " is in your cart. (x)".
+
+
+
+Delete Button: Decrements the item count or removes the item from the cart if the count reaches zero.
+
+
+
+Total Count: Displays a running total of items in the cart.
+
+Project Structure
+
+src/ ├── App.jsx # Main application component ├── components/ # Reusable React components │ ├── DarkModeToggle.jsx # Toggles between light and dark themes │ ├── CategoryFilter.jsx # Dropdown for filtering products by category │ ├── ProductList.jsx # Displays the list of products │ ├── ProductItem.jsx # Individual product item component │ └── Cart.jsx # Manages and displays the shopping cart └── tests/ # Test suite └── indexTest.js # Jest + React Testing Library tests
+
+Setup and Installation
+
+
+
+
+
+Clone the repository: git clone cd shopping-app
+
+
+
+Install dependencies: npm install
+
+
+
+Run the application: npm start
+
+
+
+Run tests: npm test
+
+Notes
+
+
+
+
+
+The application uses modern React features such as hooks for state management and controlled components for form inputs.
+
+
+
+The CSS supports both light and dark themes, leveraging the data-theme attribute and prefers-color-scheme media queries.
+
+
+
+Tests are written using Jest and React Testing Library, focusing on component rendering, user interactions, and state changes.
