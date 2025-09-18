@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductItem from './ProductItem';
+import ProductItem from './components/ProductItem';
 
 // fake product data here, replace with lab data if provided
 const PRODUCTS = [
@@ -19,15 +19,19 @@ export default function ProductList({ selectedCategory = 'all', onAddToCart }) {
   return (
     <ul style={{ listStyle: 'none', padding: 0, margin: '1rem 0' }}>
       {/* map over the visible list and pass props down to ProductItem */}
-      {visible.map(p => (
-        <li key={p.id} style={{ marginBottom: '0.5rem' }}>
-          <ProductItem
-            name={p.name}
-            category={p.category}
-            onAddToCart={onAddToCart}
-          />
-        </li>
-      ))}
+      {visible.length > 0 ? (
+        visible.map(p => (
+          <li key={p.id} style={{ marginBottom: '0.5rem' }}>
+            <ProductItem
+              name={p.name}
+              category={p.category}
+              onAddToCart={onAddToCart}
+            />
+          </li>
+        ))
+      ) : (
+        <li>No products available.</li>
+      )}
     </ul>
   );
 }
