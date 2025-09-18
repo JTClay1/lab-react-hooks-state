@@ -1,13 +1,10 @@
-import React from 'react';
+import React from "react";
 
-export default function ProductItem({ id, name, category, onAddToCart }) {
+export default function ProductItem({ id, name, onAddToCart }) {
   return (
-    <div style={{ display: 'inline-flex', gap: '0.5rem', alignItems: 'center' }}>
+    <div style={{ display: "inline-flex", gap: ".5rem", alignItems: "center" }}>
       <span>{name}</span>
-      <button
-        data-testid={`product-${id}`}
-        onClick={() => onAddToCart(name)}
-      >
+      <button data-testid={`product-${id}`} onClick={() => onAddToCart(name)}>
         Add to Cart
       </button>
     </div>

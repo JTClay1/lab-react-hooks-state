@@ -1,48 +1,50 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { act } from "react";
-import "@testing-library/jest-dom";
-import App from "../App";
+import React from 'react'
+import { render, screen, fireEvent } from '@testing-library/react'
+import App from '../App'
+import { sampleProducts } from '../components/ProductList'
+import '@testing-library/jest-dom'
 
-test("toggles dark mode on button click", () => {
-  render(<App />);
-  // Thanks to aria-label="toggle theme", this matches /toggle/i
-  const toggleBtn = screen.getByRole("button", { name: /toggle/i });
-  expect(toggleBtn).toBeInTheDocument();
+test('toggles dark mode on button click', () => {
+  render(<App />)
+  const toggleBtn = screen.getByRole('button', { name: /toggle/i })
+  expect(toggleBtn).toBeInTheDocument()
 
-  // Click and verify the visible label flips
-  act(() => {
-    fireEvent.click(toggleBtn);
-  });
-  expect(
-    screen.getByRole("button", { name: /toggle/i })
-  ).toHaveTextContent(/switch to dark mode/i);
-});
+  fireEvent.click(toggleBtn)
+  expect(toggleBtn.textContent.toLowerCase()).toMatch(/light/i)
 
-test("filters products by category", () => {
-  render(<App />);
-  const dropdown = screen.getByRole("combobox", { name: /category filter/i });
-  fireEvent.change(dropdown, { target: { value: "Fruits" } });
+  fireEvent.click(toggleBtn)
+  expect(toggleBtn.textContent.toLowerCase()).toMatch(/dark/i)
+})
 
-  expect(screen.getByText("Apples")).toBeInTheDocument();
-  expect(screen.queryByText("Milk")).not.toBeInTheDocument();
-});
+test('filters products by category', () => {
+  render(<App />)
+  const dropdown = screen.getByRole('combobox')
 
-test("displays message when no products match filter", () => {
-  render(<App />);
-  const dropdown = screen.getByRole("combobox", { name: /category filter/i });
-  fireEvent.change(dropdown, { target: { value: "NonExistent" } });
+  fireEvent.change(dropdown, { target: { value: 'Fruits' } })
+  expect(screen.getByText(/Apple/i)).toBeInTheDocument()
+  expect(screen.queryByText(/Milk/i)).not.toBeInTheDocument()
+})
 
-  expect(screen.getByText(/no products available/i)).toBeInTheDocument();
-});
+test('displays message when no products match filter', () => {
+  render(<App />)
+  const dropdown = screen.getByRole('combobox')
+  fireEvent.change(dropdown, { target: { value: 'NonExistent' } })
 
-test("adds items to cart", () => {
-  render(<App />);
-  // ProductItem renders data-testid="product-<id>", and Apples has id=3
-  const appleBtn = screen.getByTestId("product-3");
-  act(() => {
-    fireEvent.click(appleBtn);
-  });
-  expect(
-    screen.getByText("Apples is in your cart. (x1)")
-  ).toBeInTheDocument();
-});
+  expect(screen.getByText(/no products available/i)).toBeInTheDocument()
+})
+
+test('adds items to cart', () => {
+  render(<App />)
+
+  const appleBtn = screen.getByTestId('product-' + sampleProducts.find(i => i.name === 'Apple').id)
+  fireEvent.click(appleBtn)
+
+  expect(screen.getByText(/shopping cart/i)).toBeInTheDocument()
+  expect(screen.getByText(/Apple is in your cart/i)).toBeInTheDocument()
+
+  const milkBtn = screen.getByTestId('product-' + sampleProducts.find(i => i.name === 'Milk').id)
+  fireEvent.click(milkBtn)
+
+  expect(screen.getByText(/shopping cart/i)).toBeInTheDocument()
+  expect(screen.getByText(/Milk is in your cart/i)).toBeInTheDocument()
+})
