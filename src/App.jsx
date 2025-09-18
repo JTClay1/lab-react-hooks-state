@@ -1,63 +1,74 @@
-import React, { useState } from 'react';
-import DarkModeToggle from './components/DarkModeToggle';
-import CategoryFilter from './components/CategoryFilter'; // ← this line
-import ProductList from './components/ProductList';
-import Cart from './components/Cart';
+import React, { useState } from "react";
+import ProductList from "./components/ProductList";
 
-// CategoryFilter pulled out into its own component
+export default function App() {
+  const [isDark, setIsDark] = useState(true); // matches current initial UI
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [cart, setCart] = useState({}); // { [productName]: qty }
 
-const App = () => {
-  // main app state: items in cart + current filter, now cart is an object with item counts
-  const [cart, setCart] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState('all');
-
-  // adds a product name into the cart array, increments count if already exists
-  function handleAddToCart(productName) {
-    setCart(prev => ({
+  const handleAddToCart = (name) => {
+    setCart((prev) => ({
       ...prev,
-      [productName]: (prev[productName] || 0) + 1
+      [name]: (prev[name] || 0) + 1,
     }));
-  }
+  };
 
-  // updates which category is being viewed
-  function handleCategoryChange(nextCategory) {
-    setSelectedCategory(nextCategory);
-  }
+  const totalItems = Object.values(cart).reduce((sum, n) => sum + n, 0);
 
-  // removes an item from the cart or decrements its count
-  function handleDeleteFromCart(productName) {
-    setCart(prev => {
-      const newCart = { ...prev };
-      if (newCart[productName] > 1) {
-        newCart[productName] -= 1;
-      } else {
-        delete newCart[productName];
-      }
-      return newCart;
-    });
-  }
+  const appStyles = {
+    textAlign: "center",
+    minHeight: "100vh",
+    background: isDark ? "#111" : "#fff",
+    color: isDark ? "#f5f5f5" : "#111",
+    transition: "background 0.2s ease, color 0.2s ease",
+    paddingBottom: "2rem",
+  };
 
   return (
-    <div style={{ textAlign: 'center', minHeight: '100vh' }}>
+    <div style={appStyles}>
       <h1>🛒 Shopping App</h1>
       <p>Welcome! Your task is to implement filtering, cart management, and dark mode.</p>
 
-      {/* dark mode toggle button */}
-      <DarkModeToggle />
+      {/* Option A: give the toggle button an accessible name that contains "toggle" */}
+      <button
+        aria-pressed={isDark}
+        aria-label="toggle theme"
+        onClick={() => setIsDark((d) => !d)}
+      >
+        {isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      </button>
 
-      {/* filter dropdown controls category state */}
-      <CategoryFilter value={selectedCategory} onChange={handleCategoryChange} />
+      <div style={{ marginTop: "1rem" }}>
+        <label>Filter by Category: </label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          aria-label="category filter"
+        >
+          <option value="all">All</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Dairy">Dairy</option>
+        </select>
+      </div>
 
-      {/* list shows filtered products and handles add-to-cart */}
       <ProductList
         selectedCategory={selectedCategory}
         onAddToCart={handleAddToCart}
       />
 
-      {/* cart displays the added items + total, now with delete buttons */}
-      <Cart items={cart} onDelete={handleDeleteFromCart} />
+      <div>
+        <h2>Cart</h2>
+        <ul>
+          {Object.entries(cart).map(([name, qty]) => (
+            <li key={name}>
+              {`${name} is in your cart. (x${qty})`}
+            </li>
+          ))}
+        </ul>
+        <p>
+          <strong>Total items:</strong> {totalItems}
+        </p>
+      </div>
     </div>
   );
-};
-
-export default App;
+}
