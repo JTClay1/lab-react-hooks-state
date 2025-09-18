@@ -1,23 +1,33 @@
-import React from 'react'
-import ProductCard from './ProductCard'
+import React from 'react';
+import ProductItem from './ProductItem';
 
-// Sample product data (for display purposes only)
-export const sampleProducts = [
-  { id: 1, name: 'Apple', price: '$1.00', category: 'Fruits', inStock: true },
-  { id: 2, name: 'Milk', price: '$2.50', category: 'Dairy', inStock: false }
-]
+// fake product data here, replace with lab data if provided
+const PRODUCTS = [
+  { id: 1, name: 'Milk', category: 'Dairy' },
+  { id: 2, name: 'Cheese', category: 'Dairy' },
+  { id: 3, name: 'Apples', category: 'Fruits' },
+  { id: 4, name: 'Bananas', category: 'Fruits' },
+];
 
-const ProductList = () => {
+export default function ProductList({ selectedCategory = 'all', onAddToCart }) {
+  // figure out what to show depending on dropdown selection
+  const visible =
+    selectedCategory === 'all'
+      ? PRODUCTS
+      : PRODUCTS.filter(p => p.category === selectedCategory);
+
   return (
-    <div>
-      <h2>Available Products</h2>
-
-      {/* TODO: Filter sample data using selected category */}
-      {sampleProducts.map((product) => (
-        <ProductCard key={product.id} product={product} />
+    <ul style={{ listStyle: 'none', padding: 0, margin: '1rem 0' }}>
+      {/* map over the visible list and pass props down to ProductItem */}
+      {visible.map(p => (
+        <li key={p.id} style={{ marginBottom: '0.5rem' }}>
+          <ProductItem
+            name={p.name}
+            category={p.category}
+            onAddToCart={onAddToCart}
+          />
+        </li>
       ))}
-    </div>
-  )
+    </ul>
+  );
 }
-
-export default ProductList

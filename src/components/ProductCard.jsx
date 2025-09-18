@@ -1,6 +1,7 @@
-import React from 'react'
-import styles from '../styles/ProductCard.module.css'
+import React from 'react';
+import styles from '../styles/ProductCard.module.css';
 
+// single product card styling comes from CSS module
 const ProductCard = ({ product }) => {
   return (
     <div
@@ -10,10 +11,10 @@ const ProductCard = ({ product }) => {
       <p>Price: {product.price}</p>
       <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
 
-      {/* TODO: Implement Add to Cart button functionality */}
+      {/* need to hook this up to the real add to cart handler later */}
       <button data-testid={'product-' + product.id}>Add to Cart</button>
     </div>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;
